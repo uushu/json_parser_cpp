@@ -1,7 +1,7 @@
 #include"jsonvalue.h"
 #include "json.h"
 
-//Ä¬ÈÏ¹¹Ôìº¯Êı->JsonNull
+//é»˜è®¤æ„é€ å‡½æ•°->JsonNull
 json::Json::Json()
 {
 	value_ptr = std::make_unique<json::JsonNull>();
@@ -23,18 +23,18 @@ json::Json::Json(bool value)
 	value_ptr = std::make_unique<json::JsonBool>(value);
 }
 
-//string¹¹Ôìº¯Êı->JsonString
+//stringæ„é€ å‡½æ•°->JsonString
 json::Json::Json(const std::string& value)
 {
 	value_ptr = std::make_unique<json::JsonString>(value);
 }
 
-//C·ç¸ñ×Ö·û´® ¹¹Ôìº¯Êı->JsonString
-json::Json::Json(const char* value)//×Ö·û´®×ÖÃæÖµ³£Á¿
+//Cé£æ ¼å­—ç¬¦ä¸² æ„é€ å‡½æ•°->JsonString
+json::Json::Json(const char* value)//å­—ç¬¦ä¸²å­—é¢å€¼å¸¸é‡
 {
 	value_ptr = std::make_unique<json::JsonString>(std::string(value));
 }
-//ĞÂÔöµÄ¹¹Ôìº¯Êı
+//æ–°å¢çš„æ„é€ å‡½æ•°
 json::Json::Json(std::unique_ptr <json::JsonValue> ptr)
 {
 	value_ptr = std::move(ptr);
@@ -45,45 +45,45 @@ json::Json::~Json()
 
 }
 
-//¿½±´¹¹Ôìº¯ÊıÓÃclone()½øĞĞÉî¿½±´
-json::Json::Json(const json::Json& other)//¿½±´¹¹Ôì
+//æ‹·è´æ„é€ å‡½æ•°ç”¨clone()è¿›è¡Œæ·±æ‹·è´
+json::Json::Json(const json::Json& other)//æ‹·è´æ„é€ 
 {
 	this->value_ptr = other.value_ptr ? other.value_ptr->clone() : nullptr;
 }
 
-//¿½±´¸³ÖµÊ¹ÓÃ copy and swap 
-json::Json& json::Json::operator=(const Json& other)//¿½±´¸³Öµ
+//æ‹·è´èµ‹å€¼ä½¿ç”¨ copy and swap 
+json::Json& json::Json::operator=(const Json& other)//æ‹·è´èµ‹å€¼
 {
 	Json temp(other);//copy
-	std::swap(this->value_ptr, temp.value_ptr);//½»»»ÄÚ²¿Ö¸Õë
+	std::swap(this->value_ptr, temp.value_ptr);//äº¤æ¢å†…éƒ¨æŒ‡é’ˆ
 	return *this;
 
 }
 
-//ÒÆ¶¯¹¹Ôì
-json::Json::Json(Json&& other) noexcept//ÒÆ¶¯¹¹Ôìº¯Êı
+//ç§»åŠ¨æ„é€ 
+json::Json::Json(Json&& other) noexcept//ç§»åŠ¨æ„é€ å‡½æ•°
 {
-	//ÄÃ×ßotherµÄÖ¸Õë£¬ÈÃotherÖ¸ÕëÊ§Ğ§
+	//æ‹¿èµ°otherçš„æŒ‡é’ˆï¼Œè®©otheræŒ‡é’ˆå¤±æ•ˆ
 	this->value_ptr = std::move(other.value_ptr);
 }
 
-//ÒÆ¶¯¸³Öµ
-json::Json& json::Json::operator=(Json&& other) noexcept//ÒÆ¶¯¸³Öµ
+//ç§»åŠ¨èµ‹å€¼
+json::Json& json::Json::operator=(Json&& other) noexcept//ç§»åŠ¨èµ‹å€¼
 {
-	//Ö±½Ó½»»»Ö¸Õë
+	//ç›´æ¥äº¤æ¢æŒ‡é’ˆ
 	std::swap(this->value_ptr, other.value_ptr);
 	return *this;
 }
 
 
-//ĞòÁĞ»¯
+//åºåˆ—åŒ–
 
 std::string json::Json::to_string() const
 {
 	return value_ptr->to_string();
 }
 
-//»ñÈ¡Ô­Ê¼Êı¾İ
+//è·å–åŸå§‹æ•°æ®
 std::string json::Json::get_string() const
 {
 	auto* str_ptr = dynamic_cast<JsonString*>(value_ptr.get());
@@ -95,7 +95,7 @@ std::string json::Json::get_string() const
 	throw std::logic_error("Json value is not a string.");
 }
 
-//»ñÈ¡ÀàĞÍ
+//è·å–ç±»å‹
 json::JsonType json::Json::type() const
 {
 	return value_ptr->type();
@@ -106,23 +106,23 @@ json::JsonType json::Json::type() const
 
 std::unique_ptr<json::JsonValue> json::Json::clone()const
 {
-	//Èç¹ûÄÚ²¿Ö¸ÕëÓĞĞ§¾Íµ÷ÓÃËüÖ¸ÏòµÄµÄ¶ÔÏóclone()·½·¨£¬·ñÔò·µ»ØÒ»¸ö¿ÕÖ¸Õë
+	//å¦‚æœå†…éƒ¨æŒ‡é’ˆæœ‰æ•ˆå°±è°ƒç”¨å®ƒæŒ‡å‘çš„çš„å¯¹è±¡clone()æ–¹æ³•ï¼Œå¦åˆ™è¿”å›ä¸€ä¸ªç©ºæŒ‡é’ˆ
 	return value_ptr ? value_ptr->clone() : nullptr;
 }
 
 
 
-//ÏòÊı×éÌí¼ÓÔªËØ
+//å‘æ•°ç»„æ·»åŠ å…ƒç´ 
 
-//´«Èë×óÖµ
+//ä¼ å…¥å·¦å€¼
 void json::Json::add(const Json& value)
 {
-	//ÏÈ¼ì²éËüÊÇ²»ÊÇÊı×é,²»ÊÇ¾Í°ÑËü±ä³É¿ÕÊı×é
+	//å…ˆæ£€æŸ¥å®ƒæ˜¯ä¸æ˜¯æ•°ç»„,ä¸æ˜¯å°±æŠŠå®ƒå˜æˆç©ºæ•°ç»„
 	if (this->type() != json::JsonType::ARRAY)
 	{
 		this->value_ptr = std::make_unique<json::JsonArray>();
 	}
-	//ÒÑ¾­È·¶¨ÊÇÊı×éºóÊ¹ÓÃdynamic_cast ½«»ùÀàÖ¸Õë°²È«×ª»¯ÎªÅÉÉúÀàÖ¸Õë
+	//å·²ç»ç¡®å®šæ˜¯æ•°ç»„åä½¿ç”¨dynamic_cast å°†åŸºç±»æŒ‡é’ˆå®‰å…¨è½¬åŒ–ä¸ºæ´¾ç”Ÿç±»æŒ‡é’ˆ
 	auto* arr_ptr = dynamic_cast<json::JsonArray*>(this->value_ptr.get());
 
 	if (arr_ptr)
@@ -132,7 +132,7 @@ void json::Json::add(const Json& value)
 
 }
 
-//ÒÆ¶¯(ÓÒÖµ£©
+//ç§»åŠ¨(å³å€¼ï¼‰
 void json::Json::add(Json&& value)
 {
 	if (this->type() != json::JsonType::ARRAY)
@@ -157,7 +157,7 @@ void json::Json::add(Json&& value)
 
 
 
-//1. ÓÃÓÚÊı×é·ÃÎÊµÄ operator[]
+//1. ç”¨äºæ•°ç»„è®¿é—®çš„ operator[]
 json::Json::JsonProxy json::Json::operator[](size_t index)
 {
 	if (type() != json::JsonType::ARRAY)
@@ -168,7 +168,7 @@ json::Json::JsonProxy json::Json::operator[](size_t index)
 	return JsonProxy(arr_ptr->get(index));
 }
 
-//2. ÓÃÓÚ¶ÔÏó·ÃÎÊµÄ operator[]
+//2. ç”¨äºå¯¹è±¡è®¿é—®çš„ operator[]
 json::Json::JsonProxy json::Json::operator[](const std::string& key)
 {
 	if (type() != json::JsonType::OBJECT)
@@ -180,7 +180,7 @@ json::Json::JsonProxy json::Json::operator[](const std::string& key)
 	return JsonProxy(obj_ptr->get(key));
 }
 
-//Êä³ö±ê×¼Json¸ñÊ½×Ö·û´®
+//è¾“å‡ºæ ‡å‡†Jsonæ ¼å¼å­—ç¬¦ä¸²
 std::ostream& json::operator<<(std::ostream& os, const Json& json)
 {
 	os << json.to_string();
