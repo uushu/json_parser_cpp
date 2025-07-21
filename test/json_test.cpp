@@ -4,7 +4,7 @@
 #include "parser.h"
 #include <stdexcept>
 
-// ===== »ù±¾ÀàĞÍ²âÊÔ =====
+// ===== åŸºæœ¬ç±»å‹æµ‹è¯• =====
 
 TEST(JsonBasicTest, NullConstruction) {
     json::Json null_json;
@@ -29,7 +29,7 @@ TEST(JsonBasicTest, NumberConstruction) {
     EXPECT_EQ(int_json.type(), json::JsonType::NUMBER);
     EXPECT_EQ(double_json.type(), json::JsonType::NUMBER);
 
-    // ×¢Òâ£ºstd::to_string¿ÉÄÜÓĞ¾«¶ÈÎÊÌâ£¬ËùÒÔÎÒÃÇÖ÷Òª²âÊÔÀàĞÍ
+    // æ³¨æ„ï¼šstd::to_stringå¯èƒ½æœ‰ç²¾åº¦é—®é¢˜ï¼Œæ‰€ä»¥æˆ‘ä»¬ä¸»è¦æµ‹è¯•ç±»å‹
     std::string int_str = int_json.to_string();
     std::string double_str = double_json.to_string();
 
@@ -56,12 +56,12 @@ TEST(JsonBasicTest, StringConstruction) {
     EXPECT_EQ(stdstr_json.get_string(), "test");
 }
 
-// ===== Êı×é²Ù×÷²âÊÔ =====
+// ===== æ•°ç»„æ“ä½œæµ‹è¯• =====
 
 TEST(JsonArrayTest, AddElements) {
     json::Json array;
 
-    // Ìí¼Ó²»Í¬ÀàĞÍµÄÔªËØ
+    // æ·»åŠ ä¸åŒç±»å‹çš„å…ƒç´ 
     array.add(json::Json(1));
     array.add(json::Json(2));
     array.add(json::Json("test"));
@@ -70,7 +70,7 @@ TEST(JsonArrayTest, AddElements) {
 
     EXPECT_EQ(array.type(), json::JsonType::ARRAY);
 
-    // ¼ì²éÊı×éÄÚÈİ
+    // æ£€æŸ¥æ•°ç»„å†…å®¹
     json::Json first = array[0];
     json::Json second = array[1];
     json::Json third = array[2];
@@ -89,7 +89,7 @@ TEST(JsonArrayTest, AddElements) {
 TEST(JsonArrayTest, IndexAssignment) {
     json::Json array;
 
-    // Í¨¹ıË÷Òı¸³Öµ
+    // é€šè¿‡ç´¢å¼•èµ‹å€¼
     array[0] = json::Json(10);
     array[1] = json::Json("hello");
     array[2] = json::Json(true);
@@ -110,12 +110,12 @@ TEST(JsonArrayTest, IndexAssignment) {
 TEST(JsonArrayTest, AutoExpansion) {
     json::Json array;
 
-    // ²âÊÔÊı×é×Ô¶¯À©Õ¹
+    // æµ‹è¯•æ•°ç»„è‡ªåŠ¨æ‰©å±•
     array[5] = json::Json("far");
 
     EXPECT_EQ(array.type(), json::JsonType::ARRAY);
 
-    // ¼ì²éÖĞ¼äµÄÔªËØÊÇ·ñÎªnull
+    // æ£€æŸ¥ä¸­é—´çš„å…ƒç´ æ˜¯å¦ä¸ºnull
     json::Json middle = array[2];
     EXPECT_EQ(middle.type(), json::JsonType::NUL);
 
@@ -123,12 +123,12 @@ TEST(JsonArrayTest, AutoExpansion) {
     EXPECT_EQ(far.get_string(), "far");
 }
 
-// ===== ¶ÔÏó²Ù×÷²âÊÔ =====
+// ===== å¯¹è±¡æ“ä½œæµ‹è¯• =====
 
 TEST(JsonObjectTest, KeyValuePairs) {
     json::Json obj;
 
-    // ÉèÖÃ¼üÖµ¶Ô
+    // è®¾ç½®é”®å€¼å¯¹
     obj["name"] = json::Json("John");
     obj["age"] = json::Json(30);
     obj["active"] = json::Json(true);
@@ -137,7 +137,7 @@ TEST(JsonObjectTest, KeyValuePairs) {
 
     EXPECT_EQ(obj.type(), json::JsonType::OBJECT);
 
-    // ÑéÖ¤Öµ
+    // éªŒè¯å€¼
     json::Json name = obj["name"];
     json::Json age = obj["age"];
     json::Json active = obj["active"];
@@ -153,23 +153,23 @@ TEST(JsonObjectTest, KeyValuePairs) {
     EXPECT_EQ(name.get_string(), "John");
 }
 
-// ===== Ç¶Ì×½á¹¹²âÊÔ =====
+// ===== åµŒå¥—ç»“æ„æµ‹è¯• =====
 
 TEST(JsonNestedTest, ComplexStructure) {
     json::Json root;
 
-    // ´´½¨¸´ÔÓµÄÇ¶Ì×½á¹¹
+    // åˆ›å»ºå¤æ‚çš„åµŒå¥—ç»“æ„
     root["user"]["name"] = json::Json("Alice");
     root["user"]["details"]["age"] = json::Json(25);
     root["user"]["details"]["city"] = json::Json("New York");
 
-    // ´´½¨Êı×é
+    // åˆ›å»ºæ•°ç»„
     root["user"]["hobbies"] = json::Json();
     root["user"]["hobbies"].add(json::Json("reading"));
     root["user"]["hobbies"].add(json::Json("coding"));
     root["user"]["hobbies"].add(json::Json("gaming"));
 
-    // ÑéÖ¤½á¹¹
+    // éªŒè¯ç»“æ„
     EXPECT_EQ(root.type(), json::JsonType::OBJECT);
 
     json::Json user = root["user"];
@@ -197,7 +197,7 @@ TEST(JsonNestedTest, ComplexStructure) {
     EXPECT_EQ(second_hobby.get_string(), "coding");
 }
 
-// ===== ¿½±´ºÍÒÆ¶¯²âÊÔ =====
+// ===== æ‹·è´å’Œç§»åŠ¨æµ‹è¯• =====
 
 TEST(JsonCopyMoveTest, CopyConstructor) {
     json::Json original("test_value");
@@ -205,7 +205,7 @@ TEST(JsonCopyMoveTest, CopyConstructor) {
 
     EXPECT_EQ(copy.type(), json::JsonType::STRING);
     EXPECT_EQ(copy.get_string(), "test_value");
-    EXPECT_EQ(original.get_string(), "test_value");  // Ô­Ê¼¶ÔÏóÓ¦¸Ã²»±ä
+    EXPECT_EQ(original.get_string(), "test_value");  // åŸå§‹å¯¹è±¡åº”è¯¥ä¸å˜
 }
 
 TEST(JsonCopyMoveTest, CopyAssignment) {
@@ -225,7 +225,7 @@ TEST(JsonCopyMoveTest, MoveConstructor) {
     EXPECT_EQ(moved.get_string(), "move_test");
 }
 
-// ===== JSON½âÎö²âÊÔ =====
+// ===== JSONè§£ææµ‹è¯• =====
 
 TEST(JsonParserTest, ParseNull) {
     std::string json_str = "null";
@@ -346,10 +346,10 @@ TEST(JsonParserTest, ParseNestedStructure) {
     EXPECT_EQ(active.type(), json::JsonType::BOOL);
 }
 
-// ===== ´íÎó´¦Àí²âÊÔ =====
+// ===== é”™è¯¯å¤„ç†æµ‹è¯• =====
 
 TEST(JsonErrorTest, ParseErrors) {
-    // ²âÊÔÎŞĞ§JSONÓ¦¸ÃÅ×³öÒì³£
+    // æµ‹è¯•æ— æ•ˆJSONåº”è¯¥æŠ›å‡ºå¼‚å¸¸
     EXPECT_THROW(json::Json::parse("invalid"), std::logic_error);
     EXPECT_THROW(json::Json::parse("{invalid}"), std::logic_error);
     EXPECT_THROW(json::Json::parse("\"unclosed string"), std::logic_error);
@@ -361,13 +361,13 @@ TEST(JsonErrorTest, GetStringFromNonString) {
     json::Json bool_json(true);
     json::Json null_json;
 
-    // ³¢ÊÔ´Ó·Ç×Ö·û´®JSON»ñÈ¡×Ö·û´®Ó¦¸ÃÅ×³öÒì³£
+    // å°è¯•ä»éå­—ç¬¦ä¸²JSONè·å–å­—ç¬¦ä¸²åº”è¯¥æŠ›å‡ºå¼‚å¸¸
     EXPECT_THROW(number_json.get_string(), std::logic_error);
     EXPECT_THROW(bool_json.get_string(), std::logic_error);
     EXPECT_THROW(null_json.get_string(), std::logic_error);
 }
 
-// ===== ±ß½çÇé¿ö²âÊÔ =====
+// ===== è¾¹ç•Œæƒ…å†µæµ‹è¯• =====
 
 TEST(JsonEdgeCaseTest, EmptyStructures) {
     json::Json empty_array_parsed = json::Json::parse("[]");
@@ -386,7 +386,7 @@ TEST(JsonEdgeCaseTest, WhitespaceHandling) {
     EXPECT_EQ(value.get_string(), "value");
 }
 
-// ===== ĞòÁĞ»¯²âÊÔ =====
+// ===== åºåˆ—åŒ–æµ‹è¯• =====
 
 TEST(JsonSerializationTest, BasicSerialization) {
     json::Json obj;
@@ -395,25 +395,25 @@ TEST(JsonSerializationTest, BasicSerialization) {
 
     std::string serialized = obj.to_string();
 
-    // ĞòÁĞ»¯ºóµÄ×Ö·û´®Ó¦¸Ã°üº¬¼üÖµ¶Ô
+    // åºåˆ—åŒ–åçš„å­—ç¬¦ä¸²åº”è¯¥åŒ…å«é”®å€¼å¯¹
     EXPECT_TRUE(serialized.find("\"name\"") != std::string::npos);
     EXPECT_TRUE(serialized.find("\"John\"") != std::string::npos);
     EXPECT_TRUE(serialized.find("\"age\"") != std::string::npos);
 }
 
-// ===== ĞÔÄÜ²âÊÔ =====
+// ===== æ€§èƒ½æµ‹è¯• =====
 
 TEST(JsonPerformanceTest, LargeArray) {
     json::Json large_array;
 
-    // ´´½¨Ò»¸ö½Ï´óµÄÊı×é
+    // åˆ›å»ºä¸€ä¸ªè¾ƒå¤§çš„æ•°ç»„
     for (int i = 0; i < 100; ++i) {
         large_array.add(json::Json(i));
     }
 
     EXPECT_EQ(large_array.type(), json::JsonType::ARRAY);
 
-    // ÑéÖ¤¼¸¸öÔªËØ
+    // éªŒè¯å‡ ä¸ªå…ƒç´ 
     json::Json first = large_array[0];
     json::Json middle = large_array[50];
     json::Json last = large_array[99];
@@ -423,7 +423,7 @@ TEST(JsonPerformanceTest, LargeArray) {
     EXPECT_EQ(last.type(), json::JsonType::NUMBER);
 }
 
- //Ö÷º¯Êı
+ //ä¸»å‡½æ•°
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
