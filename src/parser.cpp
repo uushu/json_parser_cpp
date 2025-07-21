@@ -13,7 +13,7 @@ json::Parser::Parser(const std::string& c):content(c),index(0){}
 json::Json json::Parser::parse()
 {
 	skip_whitespace();
-	auto result = parse_value();//Ö÷·ÖÅÉº¯Êı
+	auto result = parse_value();//ä¸»åˆ†æ´¾å‡½æ•°
 	skip_whitespace();
 	if (index != content.size())
 	{
@@ -41,7 +41,7 @@ char json::Parser::peek() const
 	{
 		throw std::logic_error("Unexcepted end of input");
 	}
-	return content[index];// ·µ»Øµ±Ç°Î»ÖÃµÄ×Ö·û£¬µ«²»ÒÆ¶¯Î»ÖÃ
+	return content[index];// è¿”å›å½“å‰ä½ç½®çš„å­—ç¬¦ï¼Œä½†ä¸ç§»åŠ¨ä½ç½®
 		
 }
 
@@ -53,7 +53,7 @@ char json::Parser::get_advance()
 		throw std::logic_error("Unexcepted end of input");
 
 	}
-	return content[index++];// ·µ»Øµ±Ç°×Ö·û£¬È»ºóindex+1
+	return content[index++];// è¿”å›å½“å‰å­—ç¬¦ï¼Œç„¶åindex+1
 
 }
 
@@ -87,18 +87,18 @@ json::Json json :: Parser::parse_bool()
 json::Json json::Parser::parse_string()
 {
 	std::string result;
-	if (get_advance() != '"') //¼ì²é¿ªÍ·µÄÒıºÅ
+	if (get_advance() != '"') //æ£€æŸ¥å¼€å¤´çš„å¼•å·
 	{
 		throw std::logic_error("String must start with a double quote");
 	}
 	while (index < content.size())
 	{
 		char ch = get_advance();
-		if (ch == '"') //Óöµ½½áÊøÒıºÅ
+		if (ch == '"') //é‡åˆ°ç»“æŸå¼•å·
 		{
 			return Json(result);
 		}
-		else if (ch == '\\') //´¦Àí×ªÒå×Ö·û
+		else if (ch == '\\') //å¤„ç†è½¬ä¹‰å­—ç¬¦
 		{
 			ch = get_advance();
 			switch (ch)
@@ -129,7 +129,7 @@ json::Json json::Parser::parse_string()
 		}
 		else
 		{
-			result += ch; //ÆÕÍ¨×Ö·ûÖ±½ÓÌí¼Ó
+			result += ch; //æ™®é€šå­—ç¬¦ç›´æ¥æ·»åŠ 
 		}
 	}
 	throw std::logic_error("Unexcepted end of input in string");
@@ -176,27 +176,27 @@ json::Json json::Parser::parse_number()
 }
 json::Json json::Parser::parse_array()
 {
-	if (get_advance() != '[') //¼ì²é¿ªÍ·µÄ·½À¨ºÅ
+	if (get_advance() != '[') //æ£€æŸ¥å¼€å¤´çš„æ–¹æ‹¬å·
 	{
 		throw std::logic_error("Array must start with a left bracket");
 	}
 	Json array = Json(std::make_unique<json::JsonArray>());
 	skip_whitespace();
-	if (peek() == ']') //¿ÕÊı×éÇé¿ö
+	if (peek() == ']') //ç©ºæ•°ç»„æƒ…å†µ
 	{
-		get_advance(); //Ìø¹ıÓÒÀ¨ºÅ
+		get_advance(); //è·³è¿‡å³æ‹¬å·
 		return array;
 	}
 	while (true)
 	{
-		array.add(parse_value()); //½âÎöÊı×éÔªËØ
+		array.add(parse_value()); //è§£ææ•°ç»„å…ƒç´ 
 		skip_whitespace();
 		char ch = get_advance();
-		if (ch == ']') //Óöµ½ÓÒÀ¨ºÅ½áÊø
+		if (ch == ']') //é‡åˆ°å³æ‹¬å·ç»“æŸ
 		{
 			return array;
 		}
-		else if (ch != ',') //¶ººÅ·Ö¸ô·û
+		else if (ch != ',') //é€—å·åˆ†éš”ç¬¦
 		{
 			throw std::logic_error("Expected ',' or ']' in array");
 		}
