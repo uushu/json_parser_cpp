@@ -13,8 +13,8 @@
 namespace json
 {
 
-	//JsonÖµÀàĞÍ
-	//Ê¹ÓÃenum class±£Ö¤ÀàĞÍ°²È«
+	//Jsonå€¼ç±»å‹
+	//ä½¿ç”¨enum classä¿è¯ç±»å‹å®‰å…¨
 	enum class JsonType
 	{
 		NUL,
@@ -27,28 +27,28 @@ namespace json
 	};
 
 
-	//³éÏó»ùÀà,¶¨ÒåËùÓĞÍ¨ÓÃ½Ó¿Ú
+	//æŠ½è±¡åŸºç±»,å®šä¹‰æ‰€æœ‰é€šç”¨æ¥å£
 	class JsonValue
 	{
 	public:
-		//ĞéÎö¹¹º¯Êı£¬È·±£Í¨¹ı»ùÀàÖ¸ÕëÉ¾³ıÅÉÉúÀà¶ÔÏóÊ±ÄÜÕıÈ·µ÷ÓÃÅÉÉúÀàµÄÎö¹¹º¯Êı
+		//è™šææ„å‡½æ•°ï¼Œç¡®ä¿é€šè¿‡åŸºç±»æŒ‡é’ˆåˆ é™¤æ´¾ç”Ÿç±»å¯¹è±¡æ—¶èƒ½æ­£ç¡®è°ƒç”¨æ´¾ç”Ÿç±»çš„ææ„å‡½æ•°
 
 		virtual ~JsonValue() = default;
 
-		//´¿Ğéº¯Êı£¬»ñÈ¡ÖµµÄÀàĞÍ
+		//çº¯è™šå‡½æ•°ï¼Œè·å–å€¼çš„ç±»å‹
 		virtual JsonType type() const = 0;
 
-		//ĞòÁĞ»¯£º½«¶ÔÏó×ª»»³É×Ö·û´®ĞÎÊ½
+		//åºåˆ—åŒ–ï¼šå°†å¯¹è±¡è½¬æ¢æˆå­—ç¬¦ä¸²å½¢å¼
 		virtual std::string to_string() const = 0;
 
-		//ÊµÏÖÉî¿½±´£¬´´½¨¸±±¾£¬·µ»ØÖ¸Ïò¸±±¾µÄÖ¸Õë
+		//å®ç°æ·±æ‹·è´ï¼Œåˆ›å»ºå‰¯æœ¬ï¼Œè¿”å›æŒ‡å‘å‰¯æœ¬çš„æŒ‡é’ˆ
 		virtual std::unique_ptr<JsonValue>clone()const = 0;
 
 
 
 	};
 
-	//Json¾ßÌåÅÉÉúÀà
+	//Jsonå…·ä½“æ´¾ç”Ÿç±»
 
 	class JsonNull :public JsonValue
 	{
@@ -63,8 +63,8 @@ namespace json
 	class JsonBool :public JsonValue
 	{
 	public:
-		//ÏÔÊ¾¹¹Ôì£¬·ÀÖ¹±àÒëÆ÷¶ÔboolÀàĞÍµ½JsonBoolÀàĞÍµÄÒşÊ½×ª»»
-		//Ò²¾ÍÊÇ²»ÄÜĞ´³É JsonBool b=true;
+		//æ˜¾ç¤ºæ„é€ ï¼Œé˜²æ­¢ç¼–è¯‘å™¨å¯¹boolç±»å‹åˆ°JsonBoolç±»å‹çš„éšå¼è½¬æ¢
+		//ä¹Ÿå°±æ˜¯ä¸èƒ½å†™æˆ JsonBool b=true;
 		explicit JsonBool(bool val) :value(val) {}
 		JsonType type() const override;
 
@@ -83,7 +83,7 @@ namespace json
 	class JsonString :public JsonValue
 	{
 	public:
-		//¹¹Ôìº¯Êı×óÖµÒıÓÃ£¬ÓÒÖµÒÆ¶¯£¬Ãâ¿½±´
+		//æ„é€ å‡½æ•°å·¦å€¼å¼•ç”¨ï¼Œå³å€¼ç§»åŠ¨ï¼Œå…æ‹·è´
 		explicit JsonString(const std::string& val) :value(val) {}
 		explicit JsonString(std::string&& val) :value(std::move(val)) {}
 		JsonType type()const override;
@@ -122,10 +122,10 @@ namespace json
 		std::string to_string() const override;
 		std::unique_ptr<JsonValue> clone() const override;
 
-		//Ìí¼ÓÔªËØµ½Êı×é
+		//æ·»åŠ å…ƒç´ åˆ°æ•°ç»„
 		void add(std::unique_ptr<JsonValue> value);
 		
-		//»ñÈ¡ÔªËØÏÂ±ê
+		//è·å–å…ƒç´ ä¸‹æ ‡
 		std::unique_ptr<JsonValue>& get(size_t index);
 		
 
@@ -141,9 +141,9 @@ namespace json
 		JsonType type() const override;
 		std::string to_string() const override;
 		std::unique_ptr<JsonValue> clone() const override;
-		//Ìí¼Ó¼üÖµ¶Ôµ½¶ÔÏó
+		//æ·»åŠ é”®å€¼å¯¹åˆ°å¯¹è±¡
 		void set(const std::string& key, std::unique_ptr<JsonValue> value);
-		//»ñÈ¡¼ü¶ÔÓ¦µÄÖµ
+		//è·å–é”®å¯¹åº”çš„å€¼
 		std::unique_ptr<JsonValue>& get(const std::string& key);
 	private:
 		std::map<std::string, std::unique_ptr<JsonValue>>values;
