@@ -44,7 +44,7 @@ json::JsonType json::JsonString::type()const
 }
 std::string json::JsonString::to_string()const
 {
-	return "\"" + value + "\""; // JSON×Ö·û´®ĞèÒª¼ÓÒıºÅ"\""
+	return "\"" + value + "\""; // JSONå­—ç¬¦ä¸²éœ€è¦åŠ å¼•å·"\""
 }
 const std::string& json::JsonString::get_string() const
 {
@@ -79,7 +79,7 @@ json::JsonType json::JsonArray::type()const
 
 std::string json::JsonArray::to_string() const
 {
-	//Êı×é
+	//æ•°ç»„
 	std::string result = "[";
 
 	for (size_t i = 0;i < values.size();i++)
@@ -98,34 +98,34 @@ std::string json::JsonArray::to_string() const
 }
 std::unique_ptr<json::JsonValue> json::JsonArray::clone() const
 {
-	//´´½¨Ò»¸öĞÂµÄJsonArray¶ÔÏó
+	//åˆ›å»ºä¸€ä¸ªæ–°çš„JsonArrayå¯¹è±¡
 	auto new_array = std::make_unique<json::JsonArray>();
 
 	for (const auto& element_ptr : this->values)
 	{
-		new_array->add(element_ptr->clone());//¿ËÂ¡Ã¿¸öÔªËØÌí¼Óµ½ĞÂÊı×éÖĞ
+		new_array->add(element_ptr->clone());//å…‹éš†æ¯ä¸ªå…ƒç´ æ·»åŠ åˆ°æ–°æ•°ç»„ä¸­
 	}
 
 	return new_array;
 
 }
-//Ìí¼ÓÔªËØµ½Êı×é
+//æ·»åŠ å…ƒç´ åˆ°æ•°ç»„
 void json::JsonArray::add(std::unique_ptr<json::JsonValue> value)
 {
-	//Ê¹ÓÃstd::move½«valueµÄËùÓĞÈ¨½»¸øvectorÖĞ
+	//ä½¿ç”¨std::moveå°†valueçš„æ‰€æœ‰æƒäº¤ç»™vectorä¸­
 	values.push_back(std::move(value));
 }
 
-//»ñÈ¡Êı×éÏàÓ¦ÏÂ±êµÄÔªËØ
-//·µ»ØÒıÓÃ¶ø²»ÊÇ¿½±´µÄÔ­Òò£ºunique_ptr²»ÔÊĞí¿½±´£¬ÏíÓĞ¶ÀÕ¼È¨
+//è·å–æ•°ç»„ç›¸åº”ä¸‹æ ‡çš„å…ƒç´ 
+//è¿”å›å¼•ç”¨è€Œä¸æ˜¯æ‹·è´çš„åŸå› ï¼šunique_pträ¸å…è®¸æ‹·è´ï¼Œäº«æœ‰ç‹¬å æƒ
 std::unique_ptr<json::JsonValue>& json::JsonArray::get(size_t index)
 {
-	//·ÃÎÊµÄË÷Òı³¬³ö·¶Î§×Ô¶¯À©Èİ
+	//è®¿é—®çš„ç´¢å¼•è¶…å‡ºèŒƒå›´è‡ªåŠ¨æ‰©å®¹
 	if (index >= values.size())
 	{
 		values.resize(index + 1);
 	}
-	//À©Èİ³öµÄĞÂÎ»ÖÃÊÇ¿ÕµÄ£¬ÓÃÒ»¸öÖ¸ÏòJsonNullµÄunique_ptrÖ¸ÕëÌî³ä¶ÔÓ¦ÔªËØ
+	//æ‰©å®¹å‡ºçš„æ–°ä½ç½®æ˜¯ç©ºçš„ï¼Œç”¨ä¸€ä¸ªæŒ‡å‘JsonNullçš„unique_ptræŒ‡é’ˆå¡«å……å¯¹åº”å…ƒç´ 
 	if (!values[index])
 	{
 		values[index] = std::make_unique<JsonNull>();
@@ -162,11 +162,11 @@ std::unique_ptr<json::JsonValue> json::JsonObject::clone() const
 	auto new_object = std::make_unique<json::JsonObject>();
 	for (const auto& pair : this->values)
 	{
-		new_object->set(pair.first, pair.second->clone()); //¿ËÂ¡Ã¿¸ö¼üÖµ¶ÔÌí¼Óµ½ĞÂ¶ÔÏóÖĞ
+		new_object->set(pair.first, pair.second->clone()); //å…‹éš†æ¯ä¸ªé”®å€¼å¯¹æ·»åŠ åˆ°æ–°å¯¹è±¡ä¸­
 	}
 	return new_object;
 }
-//Ìí¼Ó¼üÖµ¶Ôµ½¶ÔÏó
+//æ·»åŠ é”®å€¼å¯¹åˆ°å¯¹è±¡
 void json::JsonObject::set(const std::string& key, std::unique_ptr<JsonValue> value)
 {
 	values[key] = std::move(value);
@@ -174,7 +174,7 @@ void json::JsonObject::set(const std::string& key, std::unique_ptr<JsonValue> va
 std::unique_ptr<json::JsonValue>& json::JsonObject::get(const std::string& key)
 {
 	auto& ptr_ref = values[key];
-	//Èç¹ûkey²»´æÔÚ£¬map»á×Ô¶¯´´½¨Ò»¸öÄ¬ÈÏÖµ£¬ÔÚunique_ptrÖĞÊÇnullptr
+	//å¦‚æœkeyä¸å­˜åœ¨ï¼Œmapä¼šè‡ªåŠ¨åˆ›å»ºä¸€ä¸ªé»˜è®¤å€¼ï¼Œåœ¨unique_pträ¸­æ˜¯nullptr
 	if(!ptr_ref)
 	{
 		ptr_ref = std::make_unique<JsonNull>();
