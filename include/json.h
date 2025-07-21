@@ -9,57 +9,57 @@
 namespace json
 {
 
-	//¹¹½¨Ò»¸öÓÃ»§¿ÉÒÔÖ±½ÓÊ¹ÓÃµÄÍòÄÜjsonÀà
+	//æ„å»ºä¸€ä¸ªç”¨æˆ·å¯ä»¥ç›´æ¥ä½¿ç”¨çš„ä¸‡èƒ½jsonç±»
 	class Json
 	{
 
 	public:
 		
 
-		//¿ÉÄÜµÄ¹¹Ôìº¯ÊıÀàĞÍ
+		//å¯èƒ½çš„æ„é€ å‡½æ•°ç±»å‹
 		Json();
 		Json(int value);
 		Json(double value);
 		Json(bool value);
 		Json(const std::string& value);
-		Json(const char* value);//×Ö·û´®×ÖÃæÖµ³£Á¿
+		Json(const char* value);//å­—ç¬¦ä¸²å­—é¢å€¼å¸¸é‡
 
-		//ĞÂÔöµÄ¹¹Ôìº¯Êı£¬¹©JsonProxyÊ¹ÓÃ
+		//æ–°å¢çš„æ„é€ å‡½æ•°ï¼Œä¾›JsonProxyä½¿ç”¨
 		Json(std::unique_ptr <json::JsonValue> ptr);
 
 
-		//¿½±´¡¢ÒÆ¶¯¡¢Îö¹¹º¯Êı
-		Json(const Json& other);//¿½±´¹¹Ôì
-		Json& operator=(const Json& other);//¿½±´¸³Öµ
-		Json(Json&& other) noexcept;//ÒÆ¶¯¹¹Ôìº¯Êı
-		Json& operator=(Json&& other) noexcept;//ÒÆ¶¯¸³Öµ
+		//æ‹·è´ã€ç§»åŠ¨ã€ææ„å‡½æ•°
+		Json(const Json& other);//æ‹·è´æ„é€ 
+		Json& operator=(const Json& other);//æ‹·è´èµ‹å€¼
+		Json(Json&& other) noexcept;//ç§»åŠ¨æ„é€ å‡½æ•°
+		Json& operator=(Json&& other) noexcept;//ç§»åŠ¨èµ‹å€¼
 
 
 		
 
 
-		~Json();//Îö¹¹º¯Êı
+		~Json();//ææ„å‡½æ•°
 
 
-		//½Ó¿ÚAPI
+		//æ¥å£API
 
-		//ĞòÁĞ»¯
+		//åºåˆ—åŒ–
 		std::string to_string() const;
 
-		//»ñÈ¡Ô­Ê¼Êı¾İ
+		//è·å–åŸå§‹æ•°æ®
 		std::string get_string() const;
-		//»ñÈ¡ÀàĞÍ
+		//è·å–ç±»å‹
 		json::JsonType type() const;
 
 
 
-		//¿½±´
+		//æ‹·è´
 		std::unique_ptr<json::JsonValue> clone() const;
 
-		//ÏòÊı×éÌí¼ÓÔªËØ
+		//å‘æ•°ç»„æ·»åŠ å…ƒç´ 
 		void add(const Json& value);
 
-		//ÒÆ¶¯
+		//ç§»åŠ¨
 		void add(Json&& value);
 
 		static Json parse(const std::string& content);
@@ -67,23 +67,23 @@ namespace json
 
 
 
-		//´úÀíJson
+		//ä»£ç†Json
 		class JsonProxy
 		{
 		public:
 
-			//¹¹Ôìº¯Êı
+			//æ„é€ å‡½æ•°
 			JsonProxy(std::unique_ptr<json::JsonValue>& ptr) :ptr_ref(ptr) {}
 
 
-			//¿½±´¸³Öµ
+			//æ‹·è´èµ‹å€¼
 			JsonProxy& operator=(const Json& other)
 			{
 				ptr_ref = other.clone();
 				return *this;
 			}
 
-			//ÒÆ¶¯¸³Öµ
+			//ç§»åŠ¨èµ‹å€¼
 			JsonProxy& operator=(Json&& other) noexcept 
 			{
 				ptr_ref = std::move(other.value_ptr);
@@ -91,13 +91,13 @@ namespace json
 
 			}
 			
-			//ÒşÊ½ÀàĞÍ×ª»»JsonProxy->Json
-			//ÄÚÁªÊµÏÖ£¬Íâ²¿ÊµÏÖ»á±¨´í
+			//éšå¼ç±»å‹è½¬æ¢JsonProxy->Json
+			//å†…è”å®ç°ï¼Œå¤–éƒ¨å®ç°ä¼šæŠ¥é”™
 			operator Json()const {
 				return Json(ptr_ref ? ptr_ref->clone() : nullptr);
 			}
 
-			//ÊµÏÖdata[key].add()
+			//å®ç°data[key].add()
 			void add(const Json& value) 
 			{
 				if (ptr_ref->type() != json::JsonType::ARRAY)
@@ -151,15 +151,15 @@ namespace json
 		private:
 			std::unique_ptr<json::JsonValue>& ptr_ref;
 		};
-		//1. ÓÃÓÚÊı×é·ÃÎÊµÄ operator[]
+		//1. ç”¨äºæ•°ç»„è®¿é—®çš„ operator[]
 		JsonProxy operator[](size_t index);
 
-		//2. ÓÃÓÚ¶ÔÏó·ÃÎÊµÄ operator[]
+		//2. ç”¨äºå¯¹è±¡è®¿é—®çš„ operator[]
 		JsonProxy operator[](const std::string& key);
 
 
 	private:
-		//Î¨Ò»µÄ³ÉÔ±±äÁ¿£¬Ö¸ÏòÄÚ²¿Êı¾İÀàĞÍµÄÖ¸Õë
+		//å”¯ä¸€çš„æˆå‘˜å˜é‡ï¼ŒæŒ‡å‘å†…éƒ¨æ•°æ®ç±»å‹çš„æŒ‡é’ˆ
 		std::unique_ptr <json::JsonValue>value_ptr;
 
 
