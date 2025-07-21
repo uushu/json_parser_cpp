@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <chrono> // ÓÃÓÚ¼ÆÊ±µÄÍ·ÎÄ¼ş
+#include <chrono> // ç”¨äºè®¡æ—¶çš„å¤´æ–‡ä»¶
 #include "json.h"
 
 
 //int main() {
-//    // 1. ×¼±¸Ò»¸öÓĞÒ»¶¨¹æÄ£ºÍ¸´ÔÓ¶ÈµÄ²âÊÔÑù±¾
+//    // 1. å‡†å¤‡ä¸€ä¸ªæœ‰ä¸€å®šè§„æ¨¡å’Œå¤æ‚åº¦çš„æµ‹è¯•æ ·æœ¬
 //    std::string large_json_str = R"({
 //        "glossary": {
 //            "title": "example glossary",
@@ -31,12 +31,12 @@
 //        "numbers": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1e5, -0.123]
 //    })";
 //
-//    const int RUN_COUNT = 100; // ÔËĞĞ100´ÎÈ¡Æ½¾ùÖµ£¬ÈÃ½á¹û¸üÎÈ¶¨
+//    const int RUN_COUNT = 100; // è¿è¡Œ100æ¬¡å–å¹³å‡å€¼ï¼Œè®©ç»“æœæ›´ç¨³å®š
 //
-//    // --- 2. ²âÊÔ½âÎöĞÔÄÜ ---
+//    // --- 2. æµ‹è¯•è§£ææ€§èƒ½ ---
 //    std::cout << "--- Testing Parser Performance ---" << std::endl;
 //
-//    // »ñÈ¡¿ªÊ¼Ê±¼äµã
+//    // è·å–å¼€å§‹æ—¶é—´ç‚¹
 //    auto start_time_parse = std::chrono::high_resolution_clock::now();
 //
 //    json::Json parsed_data;
@@ -44,16 +44,16 @@
 //        parsed_data = json::Json::parse(large_json_str);
 //    }
 //
-//    // »ñÈ¡½áÊøÊ±¼äµã
+//    // è·å–ç»“æŸæ—¶é—´ç‚¹
 //    auto end_time_parse = std::chrono::high_resolution_clock::now();
-//    // ¼ÆËã×ÜºÄÊ±
+//    // è®¡ç®—æ€»è€—æ—¶
 //    auto duration_parse = std::chrono::duration_cast<std::chrono::microseconds>(end_time_parse - start_time_parse);
 //
 //    std::cout << "Total time for " << RUN_COUNT << " parses: " << duration_parse.count() << " microseconds." << std::endl;
 //    std::cout << "Average time per parse: " << duration_parse.count() / RUN_COUNT << " microseconds." << std::endl;
 //
 //
-//    // --- 3. ²âÊÔĞòÁĞ»¯ĞÔÄÜ ---
+//    // --- 3. æµ‹è¯•åºåˆ—åŒ–æ€§èƒ½ ---
 //    std::cout << "\n--- Testing Serialization Performance ---" << std::endl;
 //
 //    auto start_time_serialize = std::chrono::high_resolution_clock::now();
